@@ -16,15 +16,15 @@
 #           ls ${{ github.workspace }}
 #       - run: echo "🍏 This job's status is ${{ job.status }}."
 
-on:
-  # Trigger analysis when pushing in master or pull requests, and when creating
-  # a pull request. 
-  push:
-    branches:
-      - main
-  pull_request:
-      types: [opened, synchronize, reopened]
-
+# on:
+#   # Trigger analysis when pushing in master or pull requests, and when creating
+#   # a pull request. 
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#       types: [opened, synchronize, reopened]
+on: [push]
 name: Main Workflow
 jobs:
   sonarqube:
@@ -39,3 +39,4 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    - run: sh cmd.sh

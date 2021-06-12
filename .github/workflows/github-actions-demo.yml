@@ -41,8 +41,8 @@ jobs:
     #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
     - name: run sh
       run: sh cmd.sh
-    # - name: golang setup
-    #   uses: actions/setup-go@v2
-    #   with:
-    #     go-version: '1.15.2' # The Go version to download (if necessary) and use.
-    - run: go version
+    - name: golang setup
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.15.2' # The Go version to download (if necessary) and use.
+    - run: go test -v ./service

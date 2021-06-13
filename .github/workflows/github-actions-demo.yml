@@ -24,7 +24,7 @@ on:
       - main
   pull_request:
       types: [opened, synchronize, reopened]
-
+# on: [push]
 name: Main Workflow
 jobs:
   sonarqube:
@@ -34,8 +34,54 @@ jobs:
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
+    # - name: run sh
+    #   run: | 
+    #     sh cmd.sh
+    #     echo 'A_STAT='$(curl -s -u 'a2d83d9aaa7a11c4fdf494b8dea45a5003464c72': http://ec2-54-254-212-112.ap-southeast-1.compute.amazonaws.com/api/qualitygates/project_status\?analysisId=AXoBMy1wW2DQv1T6qsyG | jq '.projectStatus.status') >> $GITHUB_ENV
+    # - name: Display Name
+    #   run: |
+    #     echo ${{ env.A_STAT }}
+    # - run: echo "ABC_DEF=Hellow" >> $GITHUB_ENV
+    # - run: echo ${{ env.ABC_DEF }}
+    # - name: set analysis status
+    #   env:
+    #     analysis_status: ERROR
+    # - name: echo analysis_status
+    #   if: ${{ env.analysis_status == 'ERROR' }}
+    #   run: echo "analysis_status = ERROR"
+    # - name: "Hello world when it's Monday"
+    #   run: echo "Hello $FIRST_NAME $middle_name $Last_Name, today is Monday!"
+    #   env:
+    #     FIRST_NAME: Mona
+    #     middle_name: The
+    #     Last_Name: Octocat
+    # - run: |
+    #     # echo github.event.push_id = ${{ github.event.push_id }}
+    #     # echo github.event.ref = ${{ github.event.ref }}
+    #     # echo ${{ github.base_ref }}
+    #     # echo ${{ github.head_ref }}
+    #     echo ${{ github.sha }}
+    #     # echo ${{ github.token }}
+    #     # echo github.event.number = ${{ github.event.number  }}
+    #     # echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
+    #     # echo github.event.issue.number = ${{ github.event.issue.number }}
+    # - name: Dump GitHub context
+    #   env:
+    #     GITHUB_CONTEXT: ${{ toJSON(github) }}
+    #   run: echo "$GITHUB_CONTEXT"    
+    - name: golang setup
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.15.2' # The Go version to download (if necessary) and use.
+    - run: go test -v ./service
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    - name: SonarQube Quality Gate check
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      # Force to fail step after specific time
+      timeout-minutes: 5
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

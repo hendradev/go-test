@@ -1,0 +1,17 @@
+{"Time":"2021-06-12T23:15:43.9085127+07:00","Action":"run","Package":"go-test/service","Test":"TestGetSuccess"}
+{"Time":"2021-06-12T23:15:43.9105163+07:00","Action":"output","Package":"go-test/service","Test":"TestGetSuccess","Output":"=== RUN   TestGetSuccess\n"}
+{"Time":"2021-06-12T23:15:43.9105163+07:00","Action":"output","Package":"go-test/service","Test":"TestGetSuccess","Output":"--- PASS: TestGetSuccess (0.00s)\n"}
+{"Time":"2021-06-12T23:15:43.9105163+07:00","Action":"pass","Package":"go-test/service","Test":"TestGetSuccess","Elapsed":0}
+{"Time":"2021-06-12T23:15:43.9105163+07:00","Action":"run","Package":"go-test/service","Test":"TestGetByIdSuccess"}
+{"Time":"2021-06-12T23:15:43.9115139+07:00","Action":"output","Package":"go-test/service","Test":"TestGetByIdSuccess","Output":"=== RUN   TestGetByIdSuccess\n"}
+{"Time":"2021-06-12T23:15:43.9115139+07:00","Action":"output","Package":"go-test/service","Test":"TestGetByIdSuccess","Output":"--- PASS: TestGetByIdSuccess (0.00s)\n"}
+{"Time":"2021-06-12T23:15:43.9115139+07:00","Action":"pass","Package":"go-test/service","Test":"TestGetByIdSuccess","Elapsed":0}
+{"Time":"2021-06-12T23:15:43.9115139+07:00","Action":"run","Package":"go-test/service","Test":"TestGetByIdArgumentNil"}
+{"Time":"2021-06-12T23:15:43.9115139+07:00","Action":"output","Package":"go-test/service","Test":"TestGetByIdArgumentNil","Output":"=== RUN   TestGetByIdArgumentNil\n"}
+{"Time":"2021-06-12T23:15:43.9115139+07:00","Action":"output","Package":"go-test/service","Test":"TestGetByIdArgumentNil","Output":"\u003cnil\u003e\n"}
+{"Time":"2021-06-12T23:15:43.9115139+07:00","Action":"output","Package":"go-test/service","Test":"TestGetByIdArgumentNil","Output":"--- PASS: TestGetByIdArgumentNil (0.00s)\n"}
+{"Time":"2021-06-12T23:15:43.9115139+07:00","Action":"pass","Package":"go-test/service","Test":"TestGetByIdArgumentNil","Elapsed":0}
+{"Time":"2021-06-12T23:15:43.9115139+07:00","Action":"output","Package":"go-test/service","Output":"PASS\n"}
+{"Time":"2021-06-12T23:15:43.9115139+07:00","Action":"output","Package":"go-test/service","Output":"coverage: 83.3% of statements\n"}
+{"Time":"2021-06-12T23:15:43.9332304+07:00","Action":"output","Package":"go-test/service","Output":"ok  \tgo-test/service\t0.147s\tcoverage: 83.3% of statements\n"}
+{"Time":"2021-06-12T23:15:43.9332304+07:00","Action":"pass","Package":"go-test/service","Elapsed":0.158}

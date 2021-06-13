@@ -42,7 +42,7 @@ jobs:
     - name: run sh
       run: | 
         sh cmd.sh
-        echo "analysis_status=$(curl -s -u 'a2d83d9aaa7a11c4fdf494b8dea45a5003464c72': http://ec2-54-254-212-112.ap-southeast-1.compute.amazonaws.com/api/qualitygates/project_status\?analysisId=AXoBMy1wW2DQv1T6qsyG | jq '.projectStatus.status')" >> $GITHUB_ENV
+        echo 'analysis_status='$(curl -s -u 'a2d83d9aaa7a11c4fdf494b8dea45a5003464c72': http://ec2-54-254-212-112.ap-southeast-1.compute.amazonaws.com/api/qualitygates/project_status\?analysisId=AXoBMy1wW2DQv1T6qsyG | jq '.projectStatus.status') >> $GITHUB_ENV
         echo ${{ env.analysis_status }}
     # - name: set analysis status
     #   env:

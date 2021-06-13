@@ -40,7 +40,11 @@ jobs:
     #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
     - name: run sh
-      run: sh cmd.sh
+      run: | 
+        sh cmd.sh
+        analysis_status=$(curl -s -u "a2d83d9aaa7a11c4fdf494b8dea45a5003464c72": http://ec2-54-254-212-112.ap-southeast-1.compute.amazonaws.com/api/qualitygates/project_status\?analysisId=AXoBMy1wW2DQv1T6qsyG | jq '.projectStatus.status')
+    - if: ${{ analysis_status == 'ERROR' }}
+      run: echo "analysis_status = ERROR"
     - run: |
         # echo github.event.push_id = ${{ github.event.push_id }}
         # echo github.event.ref = ${{ github.event.ref }}

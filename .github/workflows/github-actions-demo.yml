@@ -16,15 +16,15 @@
 #           ls ${{ github.workspace }}
 #       - run: echo "🍏 This job's status is ${{ job.status }}."
 
-# on:
-#   # Trigger analysis when pushing in master or pull requests, and when creating
-#   # a pull request. 
-#   push:
-#     branches:
-#       - main
-#   pull_request:
-#       types: [opened, synchronize, reopened]
-on: [push]
+on:
+  # Trigger analysis when pushing in master or pull requests, and when creating
+  # a pull request. 
+  push:
+    branches:
+      - main
+  pull_request:
+      types: [opened, synchronize, reopened]
+# on: [push]
 name: Main Workflow
 jobs:
   sonarqube:
@@ -42,12 +42,12 @@ jobs:
     - name: run sh
       run: sh cmd.sh
     - run: |
-        echo github.event.push_id = ${{ github.event.push_id }}
-        echo github.event.ref = ${{ github.event.ref }}
-        echo ${{ github.base_ref }}
-        echo ${{ github.head_ref }}
+        # echo github.event.push_id = ${{ github.event.push_id }}
+        # echo github.event.ref = ${{ github.event.ref }}
+        # echo ${{ github.base_ref }}
+        # echo ${{ github.head_ref }}
         echo ${{ github.sha }}
-        echo ${{ github.token }}
+        # echo ${{ github.token }}
         # echo github.event.number = ${{ github.event.number  }}
         # echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
         # echo github.event.issue.number = ${{ github.event.issue.number }}

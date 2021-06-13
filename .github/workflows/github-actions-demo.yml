@@ -41,7 +41,10 @@ jobs:
     #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
     - name: run sh
       run: sh cmd.sh
-    - run: echo $GITHUB_REF
+    - run: |
+        echo github.event.number = ${{ github.event.number  }}
+        echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
+        echo github.event.issue.number = ${{ github.event.issue.number }}
     - name: golang setup
       uses: actions/setup-go@v2
       with:

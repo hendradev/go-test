@@ -42,18 +42,20 @@ jobs:
     - name: run sh
       run: | 
         sh cmd.sh
+        echo analysis_status = $(curl -s -u "a2d83d9aaa7a11c4fdf494b8dea45a5003464c72": http://ec2-54-254-212-112.ap-southeast-1.compute.amazonaws.com/api/qualitygates/project_status\?analysisId=AXoBMy1wW2DQv1T6qsyG | jq '.projectStatus.status')
+        echo ${{ analysis_status }}
     # - name: set analysis status
     #   env:
     #     analysis_status: ERROR
     # - name: echo analysis_status
     #   if: ${{ env.analysis_status == 'ERROR' }}
     #   run: echo "analysis_status = ERROR"
-    - name: "Hello world when it's Monday"
-      run: echo "Hello $FIRST_NAME $middle_name $Last_Name, today is Monday!"
-      env:
-        FIRST_NAME: Mona
-        middle_name: The
-        Last_Name: Octocat
+    # - name: "Hello world when it's Monday"
+    #   run: echo "Hello $FIRST_NAME $middle_name $Last_Name, today is Monday!"
+    #   env:
+    #     FIRST_NAME: Mona
+    #     middle_name: The
+    #     Last_Name: Octocat
     - run: |
         # echo github.event.push_id = ${{ github.event.push_id }}
         # echo github.event.ref = ${{ github.event.ref }}

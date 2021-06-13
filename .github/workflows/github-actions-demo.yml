@@ -45,7 +45,8 @@ jobs:
     - name: set analysis status
       env:
         analysis_status: ERROR
-    - if: ${{ env.analysis_status == 'ERROR' }}
+    - name: echo analysis_status
+      if: ${{ env.analysis_status == 'ERROR' }}
       run: echo "analysis_status = ERROR"
     - run: |
         # echo github.event.push_id = ${{ github.event.push_id }}

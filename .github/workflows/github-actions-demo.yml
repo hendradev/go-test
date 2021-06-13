@@ -41,7 +41,7 @@ jobs:
     #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
     - name: run sh
       run: sh cmd.sh
-      run: echo $GITHUB_REF
+    - run: echo $GITHUB_REF
     - name: golang setup
       uses: actions/setup-go@v2
       with:

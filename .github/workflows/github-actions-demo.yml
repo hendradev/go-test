@@ -48,6 +48,12 @@ jobs:
     # - name: echo analysis_status
     #   if: ${{ env.analysis_status == 'ERROR' }}
     #   run: echo "analysis_status = ERROR"
+    - name: "Hello world when it's Monday"
+      run: echo "Hello $FIRST_NAME $middle_name $Last_Name, today is Monday!"
+      env:
+        FIRST_NAME: Mona
+        middle_name: The
+        Last_Name: Octocat
     - run: |
         # echo github.event.push_id = ${{ github.event.push_id }}
         # echo github.event.ref = ${{ github.event.ref }}

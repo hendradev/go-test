@@ -52,9 +52,9 @@ jobs:
         # echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
         # echo github.event.issue.number = ${{ github.event.issue.number }}
     - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: echo "$GITHUB_CONTEXT"
     - name: golang setup
       uses: actions/setup-go@v2
       with:

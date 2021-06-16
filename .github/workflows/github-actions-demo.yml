@@ -17,16 +17,22 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: '1.15.2' # The Go version to download (if necessary) and use.
-    - name: Run go test
-      run: go test -v ./service -coverprofile=coverages/coverage.out -json > test-report.json
-    - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-    - name: SonarQube Quality Gate check
-      uses: sonarsource/sonarqube-quality-gate-action@master
-      # Force to fail step after specific time
-      timeout-minutes: 5
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    # - name: Run go test
+    #   run: go test -v ./service -coverprofile=coverages/coverage.out -json > test-report.json
+    # - name: SonarQube Scan
+    #   uses: sonarsource/sonarqube-scan-action@master
+    #   env:
+    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    # - name: SonarQube Quality Gate check
+    #   uses: sonarsource/sonarqube-quality-gate-action@master
+    #   # Force to fail step after specific time
+    #   timeout-minutes: 5
+    #   env:
+    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - uses: ouzi-dev/commit-status-updater@v1.1.0
+      with:
+        status: "pending"
+        url: http://myurl.io/
+        description: "this is my status check"
+        name: "name of my status check"

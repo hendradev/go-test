@@ -20,9 +20,9 @@ jobs:
     - name: set properties for pr decoration
       run: |
         echo "" >> sonar-project.properties
-        echo # sonar.pullrequest.key = ${{ github.event.pull_request.number }} >> sonar-project.properties
-        echo # sonar.pullrequest.branch  = ${{ github.head_ref }} >> sonar-project.properties
-        echo # sonar.pullrequest.base = ${{ github.base_ref }} >> sonar-project.properties
+        echo """# sonar.pullrequest.key = """ ${{ github.event.pull_request.number }} >> sonar-project.properties
+        echo """# sonar.pullrequest.branch = """ ${{ github.head_ref }} >> sonar-project.properties
+        echo """# sonar.pullrequest.base = ${{ github.base_ref }} """ >> sonar-project.properties
         cat sonar-project.properties
     - name: Run go test
       run: go test -v ./service -coverprofile=coverages/coverage.out -json

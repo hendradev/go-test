@@ -39,12 +39,14 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    - name: Check report task
+      run: cat .scannerwork/report-task.txt
     - name: SonarQube Quality Gate check
       uses: sonarsource/sonarqube-quality-gate-action@master
       # Force to fail step after specific time
       timeout-minutes: 5
       env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
     # - uses: ouzi-dev/commit-status-updater@v1.1.0
     #   with:
     #     status: "pending"

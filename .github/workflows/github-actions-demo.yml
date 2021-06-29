@@ -26,8 +26,8 @@ jobs:
       with:
         go-version: '1.15.2' # The Go version to download (if necessary) and use.
     - run: | 
-        echo 'SONAR_HOST_URL='(grep -w 'sonar.host.url' | cut -d= -f2) < sonar-project.properties >> $GITHUB_ENV
-        echo 'SONAR_TOKEN='(grep -w 'sonar.login' | cut -d= -f2) < sonar-project.properties >> $GITHUB_ENV        
+        echo 'SONAR_HOST_URL='$((grep -w 'sonar.host.url' | cut -d= -f2) < sonar-project.properties) >> $GITHUB_ENV
+        echo 'SONAR_TOKEN='$((grep -w 'sonar.login' | cut -d= -f2) < sonar-project.properties) >> $GITHUB_ENV        
     - run: |
         echo ${{ env.SONAR_HOST_URL }}
         echo ${{ env.SONAR_TOKEN }}

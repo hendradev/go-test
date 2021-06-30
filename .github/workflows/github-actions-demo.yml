@@ -35,7 +35,8 @@ jobs:
       env:
         GITHUB_CONTEXT: ${{ toJSON(github) }}
       run: echo "$GITHUB_CONTEXT" 
-    - name: set properties for pr decoration
+    - name: Set properties for pr decoration if event = pull_request
+      if: ${{ github.event_name == 'pull_request' }}
       run: |
         echo "" >> sonar-project.properties
         echo """sonar.pullrequest.key=${{ github.event.pull_request.number }}""" >> sonar-project.properties
@@ -43,6 +44,12 @@ jobs:
         echo """sonar.pullrequest.base=${{ github.base_ref }} """ >> sonar-project.properties
         # echo """sonar.pullrequest.base=master""" >> sonar-project.properties
         echo """sonar.pullrequest.github.repository=${{ github.repository }}""" >> sonar-project.properties
+        cat sonar-project.properties
+    - name: Set branch name for branch analysis if event = push
+      if: ${{ github.event_name == 'push' }}
+      run: |
+        echo "" >> sonar-project.properties
+        echo """sonar.branch.name=master""" >> sonar-project.properties
         cat sonar-project.properties
     - name: Run go test
       run: go test -v ./service -coverprofile=coverages/coverage.out -json

@@ -1,87 +1,73 @@
-# name: GitHub Actions Demo
-# on: [push]
-# jobs:
-#   Explore-GitHub-Actions:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-#       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-#       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-#       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-#       - name: List files in the repository
-#         run: |
-#           ls ${{ github.workspace }}
-#       - run: echo "🍏 This job's status is ${{ job.status }}."
-
 on:
-  # Trigger analysis when pushing in master or pull requests, and when creating
-  # a pull request. 
-  push:
-    branches:
-      - main
+#   push:
+#     branches:
+#       - master
   pull_request:
       types: [opened, synchronize, reopened]
-# on: [push]
 name: Main Workflow
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cache/go-build
+          ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
     - uses: actions/checkout@v2
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
-        fetch-depth: 0
-    # - name: run sh
-    #   run: | 
-    #     sh cmd.sh
-    #     echo 'A_STAT='$(curl -s -u 'a2d83d9aaa7a11c4fdf494b8dea45a5003464c72': http://ec2-54-254-212-112.ap-southeast-1.compute.amazonaws.com/api/qualitygates/project_status\?analysisId=AXoBMy1wW2DQv1T6qsyG | jq '.projectStatus.status') >> $GITHUB_ENV
-    # - name: Display Name
-    #   run: |
-    #     echo ${{ env.A_STAT }}
-    # - run: echo "ABC_DEF=Hellow" >> $GITHUB_ENV
-    # - run: echo ${{ env.ABC_DEF }}
-    # - name: set analysis status
-    #   env:
-    #     analysis_status: ERROR
-    # - name: echo analysis_status
-    #   if: ${{ env.analysis_status == 'ERROR' }}
-    #   run: echo "analysis_status = ERROR"
-    # - name: "Hello world when it's Monday"
-    #   run: echo "Hello $FIRST_NAME $middle_name $Last_Name, today is Monday!"
-    #   env:
-    #     FIRST_NAME: Mona
-    #     middle_name: The
-    #     Last_Name: Octocat
-    # - run: |
-    #     # echo github.event.push_id = ${{ github.event.push_id }}
-    #     # echo github.event.ref = ${{ github.event.ref }}
-    #     # echo ${{ github.base_ref }}
-    #     # echo ${{ github.head_ref }}
-    #     echo ${{ github.sha }}
-    #     # echo ${{ github.token }}
-    #     # echo github.event.number = ${{ github.event.number  }}
-    #     # echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
-    #     # echo github.event.issue.number = ${{ github.event.issue.number }}
-    # - name: Dump GitHub context
-    #   env:
-    #     GITHUB_CONTEXT: ${{ toJSON(github) }}
-    #   run: echo "$GITHUB_CONTEXT"    
-    - name: golang setup
+        fetch-depth: 0    
+    - name: Golang setup
       uses: actions/setup-go@v2
       with:
         go-version: '1.15.2' # The Go version to download (if necessary) and use.
-    - run: go test -v ./service -coverprofile=coverages/coverage.out -json > test-report.json
+    - run: | 
+        echo 'SONAR_HOST_URL='$((grep -w 'sonar.host.url' | cut -d= -f2) < sonar-project.properties) >> $GITHUB_ENV
+    #     echo 'SONAR_TOKEN='$((grep -w 'sonar.login' | cut -d= -f2) < sonar-project.properties) >> $GITHUB_ENV        
+    - run: |
+        echo ${{ env.SONAR_HOST_URL }}
+    #     echo ${{ env.SONAR_TOKEN }}
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: echo "$GITHUB_CONTEXT" 
+    - name: set properties for pr decoration
+      run: |
+        echo "" >> sonar-project.properties
+        echo """sonar.pullrequest.key=${{ github.event.pull_request.number }}""" >> sonar-project.properties
+        echo """sonar.pullrequest.branch=${{ github.head_ref }}""" >> sonar-project.properties
+        echo """sonar.pullrequest.base=${{ github.base_ref }} """ >> sonar-project.properties
+        # echo """sonar.pullrequest.base=master""" >> sonar-project.properties
+        echo """sonar.pullrequest.github.repository=${{ github.repository }}""" >> sonar-project.properties
+        cat sonar-project.properties
+    - name: Run go test
+      run: go test -v ./service -coverprofile=coverages/coverage.out -json
     - name: SonarQube Scan
+      # uses: docker://sonarsource/sonar-scanner-cli:latest
+      # env:
+      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       uses: sonarsource/sonarqube-scan-action@master
       env:
+        # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
+    - name: Check report task
+      run: cat .scannerwork/report-task.txt
     - name: SonarQube Quality Gate check
       uses: sonarsource/sonarqube-quality-gate-action@master
-      # Force to fail step after specific time 
+      # Force to fail step after specific time
       timeout-minutes: 5
       env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
+    # - uses: ouzi-dev/commit-status-updater@v1.1.0
+    #   with:
+    #     status: "pending"
+    #     url: http://myurl.io/
+    #     description: "this is my status check"
+    #     name: "name of my status check"

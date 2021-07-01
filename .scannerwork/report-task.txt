@@ -1,6 +1,0 @@
-projectKey=go-test
-serverUrl=http://ec2-54-254-212-112.ap-southeast-1.compute.amazonaws.com
-serverVersion=8.9.0.43852
-dashboardUrl=http://ec2-54-254-212-112.ap-southeast-1.compute.amazonaws.com/dashboard?id=go-test
-ceTaskId=AXoBMyh163kiKI-DGlss
-ceTaskUrl=http://ec2-54-254-212-112.ap-southeast-1.compute.amazonaws.com/api/ce/task?id=AXoBMyh163kiKI-DGlss

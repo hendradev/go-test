@@ -50,7 +50,8 @@ jobs:
       if: ${{ github.event_name == 'push' }}
       run: |
         echo "" >> sonar-project.properties
-        echo """sonar.branch.name=master""" >> sonar-project.properties
+        # echo """sonar.branch.name=master""" >> sonar-project.properties
+        echo """sonar.branch.name=$(echo ${GITHUB_REF#refs/heads/})""" >> sonar-project.properties
         cat sonar-project.properties
     - name: Run go test
       run: go test -v ./service -coverprofile=coverages/coverage.out -json

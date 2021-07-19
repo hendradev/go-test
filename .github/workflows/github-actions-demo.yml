@@ -1,10 +1,11 @@
 on:
   push:
     branches:
-      - master
       - development
   pull_request:
-      types: [opened, synchronize, reopened]
+    branches:
+      - development
+    types: [opened, synchronize, reopened]
 name: Main Workflow
 jobs:
   sonarqube:

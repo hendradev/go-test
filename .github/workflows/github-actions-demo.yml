@@ -1,15 +1,22 @@
 on:
-  push:
-    branches:
-      - master
+  # push:
+  #   branches:
+  #     - master
   pull_request:
     branches:
+      - master
       - development
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, closed]
 name: Main Workflow
 jobs:
+  # job-check:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Check closed, if merged=true      
   sonarqube:
     runs-on: ubuntu-latest
+    # needs: job-check
+    if: ${{ !(github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == false) }}
     steps:
     - name: Dump GitHub context
       env:

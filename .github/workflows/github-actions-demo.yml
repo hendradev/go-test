@@ -21,19 +21,10 @@ jobs:
         key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
         restore-keys: |
           ${{ runner.os }}-go-
-    - name: Checkout head if PR still open
-      if: ${{ github.event.action != 'closed' }}
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
-        fetch-depth: 0
-    - name: Checkout base if PR merged
-      if: ${{ github.event.action == 'closed' }}
-      uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.base.sha }}
-        # Disabling shallow clone is recommended for improving relevancy of reporting
-        fetch-depth: 0  
+        fetch-depth: 0 
     - name: Golang setup
       uses: actions/setup-go@v2
       with:
